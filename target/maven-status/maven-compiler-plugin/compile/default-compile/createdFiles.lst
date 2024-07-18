@@ -1,0 +1,9 @@
+org\lordalex\murdermysterylcp\Game.class
+org\lordalex\murdermysterylcp\Utils\Config.class
+org\lordalex\murdermysterylcp\Utils\Events.class
+org\lordalex\murdermysterylcp\Utils\YmlParser.class
+org\lordalex\murdermysterylcp\MurderMysteryLCP$1.class
+org\lordalex\murdermysterylcp\Utils\ColorUtil.class
+org\lordalex\murdermysterylcp\Utils\GameState.class
+org\lordalex\murdermysterylcp\MurderMysteryLCP.class
+org\lordalex\murdermysterylcp\Utils\CustomScoreboard.class

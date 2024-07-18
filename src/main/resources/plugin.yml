@@ -1,0 +1,6 @@
+name: MurderMysteryLCP
+version: '${project.version}'
+main: org.lordalex.murdermysterylcp.MurderMysteryLCP
+commands:
+  mm:
+    description: "start interrupt finish flag"
