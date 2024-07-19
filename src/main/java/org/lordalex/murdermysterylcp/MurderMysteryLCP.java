@@ -5,8 +5,10 @@ import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.lordalex.murdermysterylcp.Commands.GameCommand;
 import org.lordalex.murdermysterylcp.Utils.Config;
 import org.lordalex.murdermysterylcp.Utils.Events;
+import org.lordalex.murdermysterylcp.Utils.GameState;
 import org.lordalex.murdermysterylcp.Utils.YmlParser;
 
 import java.io.File;
@@ -18,10 +20,13 @@ public final class MurderMysteryLCP extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        instance = this;
         Bukkit.getPluginManager().registerEvents(new Events(), this);
-        File file = new File("plugins\\MurderMysteryLCP\\config.yml");
+        getCommand("game").setExecutor(new GameCommand());
+        File file = new File("config.yml");
         config = YmlParser.parseMapConfig(file);
-        System.out.println(config.getLobby());
+
+        game = new Game(this, GameState.WAITING);
 
 
         BukkitScheduler scheduler = Bukkit.getServer().getScheduler();

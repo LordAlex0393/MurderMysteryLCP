@@ -2,5 +2,5 @@ name: MurderMysteryLCP
 version: '1.0-SNAPSHOT'
 main: org.lordalex.murdermysterylcp.MurderMysteryLCP
 commands:
-  mm:
+  game:
     description: "start interrupt finish flag"

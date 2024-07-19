@@ -2,5 +2,5 @@ name: MurderMysteryLCP
 version: '${project.version}'
 main: org.lordalex.murdermysterylcp.MurderMysteryLCP
 commands:
-  mm:
+  game:
     description: "start interrupt finish flag"
