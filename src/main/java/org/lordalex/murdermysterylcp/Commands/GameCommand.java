@@ -9,46 +9,32 @@ import org.lordalex.murdermysterylcp.Utils.ColorUtil;
 import org.lordalex.murdermysterylcp.Utils.GameState;
 import org.lordalex.murdermysterylcp.Utils.GameUtil;
 
-public class GameCommand implements CommandExecutor{
+public class GameCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
-        if(args == null || args.length < 1){
-            if(sender instanceof Player){
+        if (args == null || args.length < 1) {
+            if (sender instanceof Player) {
                 Player p = (Player) sender;
                 printCommandInfo(p);
                 return true;
             }
         }
-        if(sender.isOp()) {
+        if (sender.isOp()) {
             if (args[0].equalsIgnoreCase("start")) {
                 GameUtil.start();
             } else if (args[0].equalsIgnoreCase("stop")) {
-                if (MurderMysteryLCP.game.getState() == GameState.STARTING) {
-                    //GameUtil.interrupt();
-                } else if (MurderMysteryLCP.game.getState() == GameState.GAME) {
-//                    int max1 = Integer.MIN_VALUE;
-//                    int max2 = Integer.MIN_VALUE;
-//                    for(TBTeam team : TheBridgeLCP.teams){
-//                        if(team.getPoints() > max1){
-//                            max1 = team.getPoints();
-//                        }
-//                        else if(team.getPoints() == max2){
-//
-//                        }
-//                    }
-                    //GameUtil.finish(null);
-                } else {
-                    if (sender instanceof Player) {
-                        Player p = (Player) sender;
-                        p.sendMessage(ColorUtil.getMessage("&cИгра ещё не запущена"));
-                    }
+                if (MurderMysteryLCP.game.getState() == GameState.GAME) {
+                    GameUtil.stop();
+                } else if (sender instanceof Player) {
+                    Player p = (Player) sender;
+                    p.sendMessage(ColorUtil.getMessage("&cИгра ещё не запущена"));
                 }
             }
         }
         return true;
     }
 
-    private static void printCommandInfo(Player p){
+    private static void printCommandInfo(Player p) {
         p.sendMessage(ColorUtil.getMessage("&e---------- &dУправление игрой&f (&e/game&f)&e ----------"));
         p.sendMessage(ColorUtil.getMessage("&e/game&7 start&f: запустить игру"));
         p.sendMessage(ColorUtil.getMessage("&e/game&7 stop&f: остановить игру"));

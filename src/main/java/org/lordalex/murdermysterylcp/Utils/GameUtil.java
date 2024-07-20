@@ -72,8 +72,42 @@ public class GameUtil {
             timer = DELAY;
         }
     }
+
+    public static void stop(){
+        MurderMysteryLCP.game.setState(GameState.WAITING);
+        int online = Bukkit.getOnlinePlayers().size();
+        for (Player all : Bukkit.getOnlinePlayers()) {
+            GameUtil.updateWaitingScoreboard(all, online);
+        }
+    }
     public static void game(){
         MurderMysteryLCP.game.setState(GameState.GAME);
+
+        ScoreboardManager manager = Bukkit.getScoreboardManager();
+        org.bukkit.scoreboard.Scoreboard scoreboard = manager.getNewScoreboard();
+        Objective objective = scoreboard.registerNewObjective(ColorUtil.getMessage("&bMurderMystery"), "Test");
+        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+        Score s9 = objective.getScore("    ");
+        Score s8 = objective.getScore("Ваша роль: " + ChatColor.GREEN + "Невинный");
+        Score s7 = objective.getScore("Осталось мирных: " + ChatColor.YELLOW + (Bukkit.getServer().getOnlinePlayers().size()-1));
+        Score s6 = objective.getScore("   ");
+        Score s5 = objective.getScore(ChatColor.GREEN + "Детектив жив");
+        Score s4 = objective.getScore("  ");
+        Score s3 = objective.getScore("Карта: " + ChatColor.YELLOW + MurderMysteryLCP.config.getName());
+        Score s2 = objective.getScore(" ");
+        Score s1 = objective.getScore(ColorUtil.getMessage("&a&lneVimeWorld.ru"));
+        s9.setScore(9);
+        s8.setScore(8);
+        s7.setScore(7);
+        s6.setScore(6);
+        s5.setScore(5);
+        s4.setScore(4);
+        s3.setScore(3);
+        s2.setScore(2);
+        s1.setScore(1);
+        for (Player all : Bukkit.getOnlinePlayers()) {
+            all.setScoreboard(scoreboard);
+        }
         new BukkitRunnable() {
             @Override
             public void run() {
