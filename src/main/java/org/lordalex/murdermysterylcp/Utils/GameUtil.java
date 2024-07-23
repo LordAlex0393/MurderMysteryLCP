@@ -2,6 +2,7 @@ package org.lordalex.murdermysterylcp.Utils;
 
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -82,6 +83,9 @@ public class GameUtil {
     }
     public static void game(){
         MurderMysteryLCP.game.setState(GameState.GAME);
+        for(Player p : Bukkit.getServer().getWorld("world").getPlayers()){
+            p.sendTitle(ColorUtil.getMessage("Роль:&c Маньяк"), ColorUtil.getMessage("&eУбейте всех игроков"));
+        }
 
         ScoreboardManager manager = Bukkit.getScoreboardManager();
         org.bukkit.scoreboard.Scoreboard scoreboard = manager.getNewScoreboard();
@@ -127,9 +131,13 @@ public class GameUtil {
         Location loc = parseLocation(world, MurderMysteryLCP.config.getGoldSpawns().get((int)(Math.random() * MurderMysteryLCP.config.getGoldSpawns().size())));
 //        for(String locs : MurderMysteryLCP.config.getGoldSpawns()){
 //            Location loc = parseLocation(world, locs);
-            Item dropitem = world.dropItem(loc, new ItemStack(Material.GOLD_INGOT, 1));
-            dropitem.setVelocity(dropitem.getVelocity().zero());
-        //}
+        for(Entity ent : Bukkit.getServer().getWorld("world").getEntities()){
+            if(ent.getLocation().getBlockX() == loc.getBlockX() && ent.getLocation().getBlockY() == loc.getBlockY() && ent.getLocation().getBlockZ() == loc.getBlockZ()){
+                return;
+            }
+        }
+        Item dropitem = world.dropItem(loc, new ItemStack(Material.GOLD_INGOT, 1));
+        dropitem.setVelocity(dropitem.getVelocity().zero());
     }
 
     public static void updateWaitingScoreboard(Player p, int online){

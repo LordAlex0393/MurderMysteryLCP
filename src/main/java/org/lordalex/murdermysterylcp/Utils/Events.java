@@ -1,7 +1,7 @@
 package org.lordalex.murdermysterylcp.Utils;
 
 import org.bukkit.*;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -124,7 +124,28 @@ public class Events implements Listener {
     @EventHandler
     public void onEntityDamage(EntityDamageEvent e){
         if(e.getCause().equals(EntityDamageEvent.DamageCause.FALL)){
+            Player p = ((Player) e.getEntity()).getPlayer();
+            p.sendMessage(ColorUtil.getMessage("&cТы куда собрался?"));
             e.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void projectileCreating(PlayerInteractEvent e) {
+        Player p = e.getPlayer();
+        if (e.getItem() == null) return;
+        if (!(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)) return;
+        if (e.getItem().getType() == Material.IRON_SWORD) {
+            p.launchProjectile(Snowball.class);
+        }
+        if (e.getItem().getType() == Material.FIREBALL) {
+            p.launchProjectile(Fireball.class);
+        }
+        if (e.getItem().getType() == Material.BLAZE_ROD) {
+            p.launchProjectile(WitherSkull.class);
+        }
+        if (e.getItem().getType() == Material.DIAMOND_SWORD) {
+            p.launchProjectile(Arrow.class);
         }
     }
 }
