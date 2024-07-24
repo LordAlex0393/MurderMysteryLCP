@@ -8,16 +8,19 @@ import org.bukkit.scheduler.BukkitScheduler;
 import org.lordalex.murdermysterylcp.Commands.GameCommand;
 import org.lordalex.murdermysterylcp.Config.Config;
 import org.lordalex.murdermysterylcp.Config.GameState;
+import org.lordalex.murdermysterylcp.Config.PlayerInfo;
 import org.lordalex.murdermysterylcp.Events.Events;
 import org.lordalex.murdermysterylcp.Config.YmlParser;
 
 import java.io.File;
+import java.util.HashSet;
 
 public final class MurderMysteryLCP extends JavaPlugin {
     private static Plugin instance;
     public static Config config;
     public static Game game;
 
+    public static HashSet<PlayerInfo> players = new HashSet<>();
     @Override
     public void onEnable() {
         instance = this;

@@ -1,5 +1,8 @@
 package org.lordalex.murdermysterylcp.Events;
 
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -9,15 +12,13 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Score;
-import org.bukkit.scoreboard.ScoreboardManager;
 import org.lordalex.murdermysterylcp.Config.YmlParser;
 import org.lordalex.murdermysterylcp.MurderMysteryLCP;
 import org.lordalex.murdermysterylcp.Config.GameState;
 import org.lordalex.murdermysterylcp.Utils.ColorUtil;
 import org.lordalex.murdermysterylcp.Utils.GameUtil;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import static org.lordalex.murdermysterylcp.Utils.CustomScoreboard.setWaitingScoreboard;
 

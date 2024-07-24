@@ -10,6 +10,9 @@ org\lordalex\murdermysterylcp\Config\Config.class
 org\lordalex\murdermysterylcp\Config\YmlParser.class
 org\lordalex\murdermysterylcp\Utils\GameUtil$2.class
 org\lordalex\murdermysterylcp\Utils\CustomScoreboard.class
+org\lordalex\murdermysterylcp\Config\PlayerInfo.class
 org\lordalex\murdermysterylcp\Utils\MMUtil.class
+org\lordalex\murdermysterylcp\Utils\GameUtil$3.class
 org\lordalex\murdermysterylcp\MurderMysteryLCP.class
 org\lordalex\murdermysterylcp\Config\GameState.class
+org\lordalex\murdermysterylcp\Config\Role.class
