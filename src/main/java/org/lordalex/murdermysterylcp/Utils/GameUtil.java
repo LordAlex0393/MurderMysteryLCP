@@ -40,8 +40,7 @@ public class GameUtil {
                     timer = DELAY;
                     interrupt();
                     cancel();
-                }
-                else if (timer <= 0) {
+                } else if (timer <= 0) {
                     timer = DELAY;
                     game();
                     cancel();
@@ -50,6 +49,7 @@ public class GameUtil {
             }
         }.runTaskTimer(MurderMysteryLCP.getInstance(), 0, 20);
     }
+
     public static void interrupt() {
         MurderMysteryLCP.game.setState(GameState.WAITING);
         for (Player all : Bukkit.getOnlinePlayers()) {
@@ -63,30 +63,29 @@ public class GameUtil {
 
     public static void game() {
         MurderMysteryLCP.game.setState(GameState.GAME);
-        for(Player all : Bukkit.getServer().getWorld("world").getPlayers()){
+        for (Player all : Bukkit.getServer().getWorld("world").getPlayers()) {
             MurderMysteryLCP.players.add(new PlayerInfo(all));
         }
-        for(PlayerInfo pi : MurderMysteryLCP.players){
+        for (PlayerInfo pi : MurderMysteryLCP.players) {
             pi.setRole(Role.MURDER);
             break;
         }
 
-        for(PlayerInfo pi : MurderMysteryLCP.players){
+        for (PlayerInfo pi : MurderMysteryLCP.players) {
             Player player = pi.getPlayer();
 
-            if(pi.getRole() == Role.INNOCENT){
+            if (pi.getRole() == Role.INNOCENT) {
                 player.sendTitle(ColorUtil.getMessage("Роль:&a Невинный"), ColorUtil.getMessage("&eОставайтесь в живых как можно дольше"));
-                sendDelayedTitle("&b&lПОДСКАЗКА", "&eСоберите&6 10 золота&e, чтобы получить лук", 100);
-            }
-            else if(pi.getRole() == Role.DETECTIVE){
-                player.sendTitle(ColorUtil.getMessage("Роль:&c Маньяк"), ColorUtil.getMessage("&eНайдите и убейте маньяка"));
-                sendDelayedTitle("&b&lПОДСКАЗКА", "&eИспользуйте лук для убийства маньяка", 100);
+                sendDelayedTitle(player, "&b&lПОДСКАЗКА", "&eСоберите&6 10 золота&e, чтобы получить лук", 100);
+            } else if (pi.getRole() == Role.DETECTIVE) {
+                player.sendTitle(ColorUtil.getMessage("Роль:&b Детектив"), ColorUtil.getMessage("&eНайдите и убейте маньяка"));
+                sendDelayedTitle(player, "&b&lПОДСКАЗКА", "&eИспользуйте лук для убийства маньяка", 100);
+                giveDelayedBow(player, 200);
 
 
-            }
-            else if(pi.getRole() == Role.MURDER){
+            } else if (pi.getRole() == Role.MURDER) {
                 player.sendTitle(ColorUtil.getMessage("Роль:&c Маньяк"), ColorUtil.getMessage("&eУбейте всех игроков"));
-                sendDelayedTitle("&b&lПОДСКАЗКА", "&eИспользуйте меч для убийства игроков", 100);
+                sendDelayedTitle(player, "&b&lПОДСКАЗКА", "&eИспользуйте меч для убийства игроков", 100);
                 ItemStack is = new ItemStack(Material.IRON_SWORD, 1);
                 giveDelayedSword(player, 200);
             }
@@ -97,7 +96,6 @@ public class GameUtil {
             }
             setGamingScoreboard(pi);
         }
-
 
 
         new BukkitRunnable() {
@@ -116,8 +114,6 @@ public class GameUtil {
         World world = Bukkit.getServer().getWorld("world");
 
         Location loc = parseLocation(world, MurderMysteryLCP.config.getGoldSpawns().get((int) (Math.random() * MurderMysteryLCP.config.getGoldSpawns().size())));
-//        for(String locs : MurderMysteryLCP.config.getGoldSpawns()){
-//            Location loc = parseLocation(world, locs);
         for (Entity ent : Bukkit.getServer().getWorld("world").getEntities()) {
             if (ent.getLocation().getBlockX() == loc.getBlockX() && ent.getLocation().getBlockY() == loc.getBlockY() && ent.getLocation().getBlockZ() == loc.getBlockZ()) {
                 return;
@@ -127,20 +123,19 @@ public class GameUtil {
         dropitem.setVelocity(dropitem.getVelocity().zero());
     }
 
-    private static void sendDelayedTitle(String title, String subtitle, int delay){
-        new BukkitRunnable(){
-        @Override
-        public void run(){
-            for (Player all : Bukkit.getOnlinePlayers()) {
-                all.sendTitle(ColorUtil.getMessage(title), ColorUtil.getMessage(subtitle));
-            }
-        }
-    }.runTaskLater(MurderMysteryLCP.getInstance(), delay);
-    }
-    private static void giveDelayedSword(Player player, int delay){
-        new BukkitRunnable(){
+    private static void sendDelayedTitle(Player player, String title, String subtitle, int delay) {
+        new BukkitRunnable() {
             @Override
-            public void run(){
+            public void run() {
+                player.sendTitle(ColorUtil.getMessage(title), ColorUtil.getMessage(subtitle));
+            }
+        }.runTaskLater(MurderMysteryLCP.getInstance(), delay);
+    }
+
+    private static void giveDelayedSword(Player player, int delay) {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
                 ItemStack swordStack = new ItemStack(Material.IRON_SWORD, 1);
                 ItemMeta swordMeta = swordStack.getItemMeta();
                 swordMeta.setDisplayName(ChatColor.RED + "Меч маньяка");
@@ -150,6 +145,25 @@ public class GameUtil {
                 swordMeta.spigot().setUnbreakable(true);
                 swordStack.setItemMeta(swordMeta);
                 player.getInventory().setItem(1, swordStack);
+            }
+        }.runTaskLater(MurderMysteryLCP.getInstance(), delay);
+    }
+
+    private static void giveDelayedBow(Player player, int delay) {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                ItemStack bowStack = new ItemStack(Material.BOW, 1);
+                ItemMeta bowMeta = bowStack.getItemMeta();
+                bowMeta.setDisplayName(ChatColor.GREEN + "Лук");
+                List<String> bowList = new ArrayList<>();
+                bowList.add(ChatColor.GRAY + "Используйте лук, чтобы убить маньяка");
+                bowMeta.setLore(bowList);
+                bowMeta.spigot().setUnbreakable(true);
+                bowStack.setItemMeta(bowMeta);
+                player.getInventory().setItem(1, bowStack);
+                ItemStack arrowStack = new ItemStack(Material.ARROW, 1);
+                player.getInventory().setItem(9, arrowStack);
             }
         }.runTaskLater(MurderMysteryLCP.getInstance(), delay);
     }

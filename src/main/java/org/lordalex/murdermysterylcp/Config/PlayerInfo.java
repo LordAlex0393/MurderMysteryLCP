@@ -11,7 +11,7 @@ public class PlayerInfo {
 
     public PlayerInfo(Player player) {
         this.player = player;
-        this.role = Role.INNOCENT;
+        this.role = Role.DETECTIVE;
     }
 
     public Player getPlayer() {
