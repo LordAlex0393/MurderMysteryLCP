@@ -9,9 +9,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.util.Vector;
 import org.lordalex.murdermysterylcp.Config.YmlParser;
 import org.lordalex.murdermysterylcp.MurderMysteryLCP;
 import org.lordalex.murdermysterylcp.Config.GameState;
@@ -120,7 +123,9 @@ public class Events implements Listener {
             p.sendMessage(ColorUtil.getMessage("&cТы куда собрался?"));
             e.setCancelled(true);
         }
+        e.setDamage(20000);
     }
+
 
     @EventHandler
     public void projectileCreating(PlayerInteractEvent e) {
@@ -140,4 +145,5 @@ public class Events implements Listener {
             p.launchProjectile(Arrow.class);
         }
     }
+
 }

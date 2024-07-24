@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
-import org.lordalex.murdermysterylcp.Config.GameState;
 import org.lordalex.murdermysterylcp.Config.PlayerInfo;
 import org.lordalex.murdermysterylcp.Config.Role;
 import org.lordalex.murdermysterylcp.MurderMysteryLCP;
