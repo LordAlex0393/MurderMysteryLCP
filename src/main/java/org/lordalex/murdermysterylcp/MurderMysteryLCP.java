@@ -6,10 +6,10 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.lordalex.murdermysterylcp.Commands.GameCommand;
-import org.lordalex.murdermysterylcp.Utils.Config;
-import org.lordalex.murdermysterylcp.Utils.Events;
-import org.lordalex.murdermysterylcp.Utils.GameState;
-import org.lordalex.murdermysterylcp.Utils.YmlParser;
+import org.lordalex.murdermysterylcp.Config.Config;
+import org.lordalex.murdermysterylcp.Config.GameState;
+import org.lordalex.murdermysterylcp.Events.Events;
+import org.lordalex.murdermysterylcp.Config.YmlParser;
 
 import java.io.File;
 

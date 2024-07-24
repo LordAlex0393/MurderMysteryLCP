@@ -1,4 +1,6 @@
-package org.lordalex.murdermysterylcp.Utils;
+package org.lordalex.murdermysterylcp.Config;
+
+import net.md_5.bungee.api.ChatColor;
 
 public enum GameState {
     WAITING,

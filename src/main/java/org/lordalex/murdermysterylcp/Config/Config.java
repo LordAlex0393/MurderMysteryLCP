@@ -1,4 +1,4 @@
-package org.lordalex.murdermysterylcp.Utils;
+package org.lordalex.murdermysterylcp.Config;
 
 import java.util.List;
 

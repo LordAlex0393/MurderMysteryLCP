@@ -1,4 +1,4 @@
-package org.lordalex.murdermysterylcp.Utils;
+package org.lordalex.murdermysterylcp.Events;
 
 import org.bukkit.*;
 import org.bukkit.entity.*;
@@ -13,9 +13,13 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.ScoreboardManager;
+import org.lordalex.murdermysterylcp.Config.YmlParser;
 import org.lordalex.murdermysterylcp.MurderMysteryLCP;
+import org.lordalex.murdermysterylcp.Config.GameState;
+import org.lordalex.murdermysterylcp.Utils.ColorUtil;
+import org.lordalex.murdermysterylcp.Utils.GameUtil;
 
-import static org.lordalex.murdermysterylcp.Utils.GameUtil.updateWaitingScoreboard;
+import static org.lordalex.murdermysterylcp.Utils.CustomScoreboard.setWaitingScoreboard;
 
 public class Events implements Listener {
 
@@ -38,6 +42,8 @@ public class Events implements Listener {
         p.getInventory().setArmorContents(null);
         p.setHealth(20);
         p.setFoodLevel(20);
+        p.setCustomName(p.getName());
+        p.setCustomNameVisible(true);
         Location loc = YmlParser.parseLocation(p.getWorld(), MurderMysteryLCP.config.getLobby());
         p.teleport(loc);
 
@@ -56,24 +62,9 @@ public class Events implements Listener {
                 GameUtil.start();
             }
 
-            ScoreboardManager manager = Bukkit.getScoreboardManager();
-            org.bukkit.scoreboard.Scoreboard scoreboard = manager.getNewScoreboard();
-            Objective objective = scoreboard.registerNewObjective(ColorUtil.getMessage("&bMurderMystery"), "Test");
-            objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-            Score s5 = objective.getScore("   ");
-            Score s4 = objective.getScore("Карта: " + ChatColor.YELLOW + MurderMysteryLCP.config.getName());
-            Score s3 = objective.getScore("Игроков: " + ChatColor.YELLOW + online + "/" + MurderMysteryLCP.config.getPlayersToStart());
-            Score s2 = objective.getScore(" ");
-            Score s1 = objective.getScore(ColorUtil.getMessage("&a&lneVimeWorld.ru"));
-            s5.setScore(5);
-            s4.setScore(4);
-            s3.setScore(3);
-            s2.setScore(2);
-            s1.setScore(1);
             for (Player all : Bukkit.getOnlinePlayers()) {
-                all.setScoreboard(scoreboard);
+                setWaitingScoreboard(all,online);
             }
-
         }
         else if(MurderMysteryLCP.game.getState() == GameState.GAME){
             p.setGameMode(GameMode.SPECTATOR);

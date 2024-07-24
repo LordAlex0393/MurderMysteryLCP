@@ -5,8 +5,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.lordalex.murdermysterylcp.MurderMysteryLCP;
+import org.lordalex.murdermysterylcp.Config.GameState;
 import org.lordalex.murdermysterylcp.Utils.ColorUtil;
-import org.lordalex.murdermysterylcp.Utils.GameState;
 import org.lordalex.murdermysterylcp.Utils.GameUtil;
 
 public class GameCommand implements CommandExecutor {

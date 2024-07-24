@@ -1,18 +1,18 @@
 package org.lordalex.murdermysterylcp.Utils;
 
 import org.bukkit.*;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.*;
+import org.lordalex.murdermysterylcp.Config.GameState;
 import org.lordalex.murdermysterylcp.MurderMysteryLCP;
 
 import java.util.ArrayList;
 
-import static org.lordalex.murdermysterylcp.Utils.YmlParser.parseLocation;
+import static org.lordalex.murdermysterylcp.Config.YmlParser.parseLocation;
 
 public class GameUtil {
     public static int DELAY = 3;
@@ -75,16 +75,16 @@ public class GameUtil {
     }
 
     public static void stop(){
-        MurderMysteryLCP.game.setState(GameState.WAITING);
-        int online = Bukkit.getOnlinePlayers().size();
-        for (Player all : Bukkit.getOnlinePlayers()) {
-            GameUtil.updateWaitingScoreboard(all, online);
-        }
+        MurderMysteryLCP.game.setState(GameState.ENDING);
     }
     public static void game(){
         MurderMysteryLCP.game.setState(GameState.GAME);
         for(Player p : Bukkit.getServer().getWorld("world").getPlayers()){
             p.sendTitle(ColorUtil.getMessage("Роль:&c Маньяк"), ColorUtil.getMessage("&eУбейте всех игроков"));
+            p.setCustomName("Игрок");
+            for(Player on: Bukkit.getServer().getOnlinePlayers()) {
+                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "nick " + on.getName() + " off");
+            }
         }
 
         ScoreboardManager manager = Bukkit.getScoreboardManager();
@@ -138,15 +138,6 @@ public class GameUtil {
         }
         Item dropitem = world.dropItem(loc, new ItemStack(Material.GOLD_INGOT, 1));
         dropitem.setVelocity(dropitem.getVelocity().zero());
-    }
-
-    public static void updateWaitingScoreboard(Player p, int online){
-        ArrayList<String> scores = new ArrayList<>();
-        scores.add("  ");
-        scores.add("Карта: " + ChatColor.YELLOW + MurderMysteryLCP.config.getName());
-        scores.add("Игроков: " + ChatColor.YELLOW + online + "/" + MurderMysteryLCP.config.getPlayersToStart());
-        Scoreboard scoreboard = CustomScoreboard.createScoreboard(scores);
-        p.setScoreboard(scoreboard);
     }
 
     public static void updateStartingScoreboard(Player p, int online){

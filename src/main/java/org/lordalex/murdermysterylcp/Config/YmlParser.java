@@ -1,4 +1,4 @@
-package org.lordalex.murdermysterylcp.Utils;
+package org.lordalex.murdermysterylcp.Config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
