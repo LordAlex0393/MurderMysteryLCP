@@ -5,6 +5,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.*;
 import org.lordalex.murdermysterylcp.Config.GameState;
@@ -13,6 +14,7 @@ import org.lordalex.murdermysterylcp.Config.Role;
 import org.lordalex.murdermysterylcp.MurderMysteryLCP;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.lordalex.murdermysterylcp.Config.YmlParser.parseLocation;
 import static org.lordalex.murdermysterylcp.Utils.CustomScoreboard.*;
@@ -70,27 +72,25 @@ public class GameUtil {
         }
 
         for(PlayerInfo pi : MurderMysteryLCP.players){
+            Player player = pi.getPlayer();
 
             if(pi.getRole() == Role.INNOCENT){
-                pi.getPlayer().sendTitle(ColorUtil.getMessage("Роль:&a Невинный"), ColorUtil.getMessage("&eОставайтесь в живых как можно дольше"));
+                player.sendTitle(ColorUtil.getMessage("Роль:&a Невинный"), ColorUtil.getMessage("&eОставайтесь в живых как можно дольше"));
+                sendDelayedTitle("&b&lПОДСКАЗКА", "&eСоберите&6 10 золота&e, чтобы получить лук", 100);
             }
             else if(pi.getRole() == Role.DETECTIVE){
-                pi.getPlayer().sendTitle(ColorUtil.getMessage("Роль:&c Маньяк"), ColorUtil.getMessage("&eНайдите и убейте маньяка"));
+                player.sendTitle(ColorUtil.getMessage("Роль:&c Маньяк"), ColorUtil.getMessage("&eНайдите и убейте маньяка"));
+                sendDelayedTitle("&b&lПОДСКАЗКА", "&eИспользуйте лук для убийства маньяка", 100);
+
+
             }
             else if(pi.getRole() == Role.MURDER){
-                pi.getPlayer().sendTitle(ColorUtil.getMessage("Роль:&c Маньяк"), ColorUtil.getMessage("&eУбейте всех игроков"));
-                new BukkitRunnable(){
-                    @Override
-                    public void run(){
-                        ItemStack swordStack = new ItemStack(Material.IRON_SWORD, 1);
-                        swordStack.setDurability((short)999);
-                        pi.getPlayer().getInventory().setItem(1, swordStack);
-                        for (Player all : Bukkit.getOnlinePlayers()) {
-                            all.sendTitle(ColorUtil.getMessage("&c&l Маньяк получил оружие"), ColorUtil.getMessage(" "));
-                        }
-                    }
-                }.runTaskLater(MurderMysteryLCP.getInstance(), 100);
+                player.sendTitle(ColorUtil.getMessage("Роль:&c Маньяк"), ColorUtil.getMessage("&eУбейте всех игроков"));
+                sendDelayedTitle("&b&lПОДСКАЗКА", "&eИспользуйте меч для убийства игроков", 100);
+                ItemStack is = new ItemStack(Material.IRON_SWORD, 1);
+                giveDelayedSword(player, 200);
             }
+
             pi.getPlayer().setCustomName("Игрок");
             for (Player on : Bukkit.getServer().getOnlinePlayers()) {
                 Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "nick " + on.getName() + " off");
@@ -127,13 +127,30 @@ public class GameUtil {
         dropitem.setVelocity(dropitem.getVelocity().zero());
     }
 
-    public static void updateStartingScoreboard(Player p, int online) {
-        ArrayList<String> scores = new ArrayList<>();
-        scores.add("  ");
-        scores.add("Карта: " + ChatColor.YELLOW + MurderMysteryLCP.config.getName());
-        scores.add("Игроков: " + ChatColor.YELLOW + online + "/" + MurderMysteryLCP.config.getPlayersToStart());
-        Scoreboard scoreboard = CustomScoreboard.createScoreboard(scores);
-        p.setScoreboard(scoreboard);
+    private static void sendDelayedTitle(String title, String subtitle, int delay){
+        new BukkitRunnable(){
+        @Override
+        public void run(){
+            for (Player all : Bukkit.getOnlinePlayers()) {
+                all.sendTitle(ColorUtil.getMessage(title), ColorUtil.getMessage(subtitle));
+            }
+        }
+    }.runTaskLater(MurderMysteryLCP.getInstance(), delay);
     }
-
+    private static void giveDelayedSword(Player player, int delay){
+        new BukkitRunnable(){
+            @Override
+            public void run(){
+                ItemStack swordStack = new ItemStack(Material.IRON_SWORD, 1);
+                ItemMeta swordMeta = swordStack.getItemMeta();
+                swordMeta.setDisplayName(ChatColor.RED + "Меч маньяка");
+                List<String> swordList = new ArrayList<>();
+                swordList.add(ChatColor.GRAY + "Используйте меч, чтобы убивать игроков");
+                swordMeta.setLore(swordList);
+                swordMeta.spigot().setUnbreakable(true);
+                swordStack.setItemMeta(swordMeta);
+                player.getInventory().setItem(1, swordStack);
+            }
+        }.runTaskLater(MurderMysteryLCP.getInstance(), delay);
+    }
 }
