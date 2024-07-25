@@ -23,6 +23,9 @@ import org.lordalex.murdermysterylcp.Utils.GameUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.lordalex.murdermysterylcp.Utils.CustomScoreboard.setWaitingScoreboard;
 
 public class Events implements Listener {
@@ -107,23 +110,53 @@ public class Events implements Listener {
 
     @EventHandler
     public void onItemClick(PlayerInteractEvent e) {
-        if (e == null) return;
-        Player p = e.getPlayer();
-        if (e.getItem() == null) return;
+        if (e == null || e.getItem() == null) return;
         if (!(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)) return;
         if (e.getItem().getType() == Material.COMPASS) {
-            p.sendMessage(ColorUtil.getMessage("&cТы куда собрался?"));
+            e.getPlayer().sendMessage(ChatColor.RED +  "Ты куда собрался?");
         }
     }
 
     @EventHandler
-    public void onEntityDamage(EntityDamageEvent e){
-        if(e.getCause().equals(EntityDamageEvent.DamageCause.FALL)){
-            Player p = ((Player) e.getEntity()).getPlayer();
-            p.sendMessage(ColorUtil.getMessage("&cТы куда собрался?"));
-            e.setCancelled(true);
+    public void onEntityDamage(EntityDamageEvent event){
+        if(event.getCause().equals(EntityDamageEvent.DamageCause.FALL)){
+            Player player = ((Player) event.getEntity()).getPlayer();
+            player.sendMessage(ChatColor.RED +  "Ай!");
+            event.setCancelled(true);
         }
-        e.setDamage(20000);
+        //event.setDamage(20000);
+    }
+
+    @EventHandler
+    public void PickupItem(PlayerPickupItemEvent e) {
+        Player player = e.getPlayer();
+
+        if (e.getItem().getItemStack().getType() == Material.GOLD_INGOT){
+            if(!player.getInventory().contains(Material.GOLD_INGOT)){
+                player.getInventory().setItem(8, new ItemStack(Material.GOLD_INGOT, 1));
+                e.setCancelled(true);
+            }
+            else{
+                //player.getInventory().setItem(8, new ItemStack(Material.GOLD_INGOT, player.getInventory().getItem(8).getAmount()+1));
+            }
+            player.sendMessage(String.valueOf(player.getInventory().getItem(8).getAmount()));
+
+            if(player.getInventory().getItem(8).getAmount()==9){
+                if(!player.getInventory().contains(Material.BOW)){
+                    ItemStack bowStack = new ItemStack(Material.BOW, 1);
+                    ItemMeta bowMeta = bowStack.getItemMeta();
+                    bowMeta.setDisplayName(ChatColor.GREEN + "Лук");
+                    List<String> bowList = new ArrayList<>();
+                    bowList.add(ChatColor.GRAY + "Используйте лук, чтобы убить маньяка");
+                    bowMeta.setLore(bowList);
+                    bowMeta.spigot().setUnbreakable(true);
+                    bowStack.setItemMeta(bowMeta);
+                    player.getInventory().setItem(1, bowStack);
+                }
+                ItemStack arrowStack = new ItemStack(Material.ARROW, 1);
+                player.getInventory().setItem(9, arrowStack);
+            }
+        }
     }
 
 

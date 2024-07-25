@@ -145,6 +145,9 @@ public class GameUtil {
                 swordMeta.spigot().setUnbreakable(true);
                 swordStack.setItemMeta(swordMeta);
                 player.getInventory().setItem(1, swordStack);
+                for(Player all : Bukkit.getServer().getWorld("world").getPlayers()){
+                    all.sendTitle(ColorUtil.getMessage("&b&cМАНЬЯК ПОЛУЧИЛ ОРУЖИЕ"), ColorUtil.getMessage(""));
+                }
             }
         }.runTaskLater(MurderMysteryLCP.getInstance(), delay);
     }
