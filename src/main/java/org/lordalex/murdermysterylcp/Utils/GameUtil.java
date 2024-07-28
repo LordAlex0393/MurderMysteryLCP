@@ -91,6 +91,7 @@ public class GameUtil {
             }
 
             pi.getPlayer().setCustomName("Игрок");
+
             for (Player on : Bukkit.getServer().getOnlinePlayers()) {
                 Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "nick " + on.getName() + " off");
             }

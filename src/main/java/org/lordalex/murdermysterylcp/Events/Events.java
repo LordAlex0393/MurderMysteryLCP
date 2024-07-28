@@ -154,7 +154,7 @@ public class Events implements Listener {
                     player.getInventory().setItem(1, bowStack);
                 }
                 ItemStack arrowStack = new ItemStack(Material.ARROW, 1);
-                player.getInventory().setItem(9, arrowStack);
+                player.getInventory().setItem(2, arrowStack);
             }
         }
     }
